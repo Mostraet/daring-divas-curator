@@ -120,6 +120,17 @@ async function runCurator() {
     network: Network.BASE_MAINNET,
   });
 
+  // --- NEW DEBUGGING BLOCK ---
+  const token = process.env.GIST_ACCESS_TOKEN;
+  console.log('--- GIST TOKEN DEBUG ---');
+  console.log('Token exists in script:', !!token);
+  if (token) {
+    console.log('Token length:', token.length);
+    console.log('Token starts with:', token.substring(0, 4));
+  }
+  console.log('------------------------');
+  // --- END DEBUGGING BLOCK ---
+
   console.log('Starting curator run...');
 
   // --- ADDED: Ensure the minted-images directory exists ---
