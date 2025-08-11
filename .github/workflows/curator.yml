@@ -1,44 +1,27 @@
 ```yaml
-# .github/workflows/curator.yml
-
 name: Daring Divas Curator
 
-# This section defines WHEN the script will run.
 on:
-  # 1. Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
-
-  # 2. Runs the script on a schedule (every 12 hours at the top of the hour).
-  #    This uses UTC time. '0 */12 * * *' means at minute 0 of every 12th hour.
   schedule:
     - cron: '0 */12 * * *'
 
-# This section defines the actual JOB to be done.
 jobs:
   curate:
-    # The type of virtual machine to run the job on. 'ubuntu-latest' is standard and reliable.
     runs-on: ubuntu-latest
-
-    # These are the sequential steps the virtual machine will perform.
     steps:
-      # Step 1: Checks out your repository code so the job can access it.
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # Step 2: Sets up the Node.js environment.
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Use a recent Long-Term Support version of Node.js
+          node-version: '20'
 
-      # Step 3: Install the project's dependencies from package.json (jimp, axios, etc.).
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Run the main curator script.
       - name: Run Curator Script
-        # This is where we securely pass your GitHub Secrets to the script.
-        # The script will access them via process.env.GIST_ID, etc.
         run: node curator.js
         env:
           GIST_ID: ${{ secrets.GIST_ID }}
