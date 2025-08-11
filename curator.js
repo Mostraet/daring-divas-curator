@@ -80,7 +80,7 @@ const path = require('path'); // For handling file paths
 // --- CONFIGURATION ---
 const DARING_DIVAS_CONTRACT = '0xD127d434266eBF4CB4F861071ebA50A799A23d9d';
 const GIST_ID = process.env.GIST_ID;
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_TOKEN = process.env.GIST_ACCESS_TOKEN;
 const GIST_FILENAME = 'censored-list.json';
 const GIST_API_URL = `https://api.github.com/gists/${GIST_ID}`;
 const SIMILARITY_THRESHOLD = 5;

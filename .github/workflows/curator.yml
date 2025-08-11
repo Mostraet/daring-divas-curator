@@ -3,7 +3,7 @@ name: Daring Divas Curator
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 */6 * * *'
 
 jobs:
   curate:
@@ -24,6 +24,6 @@ jobs:
         run: node curator.js
         env:
           GIST_ID: ${{ secrets.GIST_ID }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIST_ACCESS_TOKEN: ${{ secrets.GIST_ACCESS_TOKEN }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
 
