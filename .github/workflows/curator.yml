@@ -3,7 +3,7 @@ name: Daring Divas Curator
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */6 * * *' # Updated to run every 6 hours
 
 jobs:
   curate:
@@ -21,9 +21,17 @@ jobs:
         run: npm install
 
       - name: Run Curator Script
+        id: run_curator # Give this step an ID so we can reference its output
         run: node curator.js
         env:
           GIST_ID: ${{ secrets.GIST_ID }}
-          GIST_ACCESS_TOKEN: ${{ secrets.GIST_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
+
+      # --- NEW, SIMPLER STEP: Send a Telegram message only if the list changed ---
+      - name: Send Telegram notification
+        if: steps.run_curator.outputs.list_changed == 'true'
+        run: |
+          MESSAGE="🚨 *Daring Divas Curator: New NSFW Cards Detected!* 🚨%0A%0APlease update the uncensored images in the reveal app.%0A%0ASee the latest run for details: https://github.com/${{ github.repository }}/actions"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=${MESSAGE}&parse_mode=Markdown"
 
