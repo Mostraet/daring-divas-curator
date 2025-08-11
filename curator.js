@@ -197,12 +197,18 @@ async function runCurator() {
   if (JSON.stringify(oldKeys) !== JSON.stringify(newKeys)) {
     console.log(`\nList has changed. Old count: ${oldKeys.length}, New count: ${newKeys.length}.`);
     console.log('Updating Gist...');
-    await axios.patch(
-        GIST_API_URL, 
-        { files: { [GIST_FILENAME]: { content: JSON.stringify(newCensoredList, null, 2) } } }, 
-        { headers: { Authorization: `Bearer ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' } }
-    );
-    console.log('Gist updated successfully!');
+//    await axios.patch(
+//        GIST_API_URL, 
+//        { files: { [GIST_FILENAME]: { content: JSON.stringify(newCensoredList, null, 2) } } }, 
+//        { headers: { Authorization: `Bearer ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' } }
+//    );
+//    console.log('Gist updated successfully!');
+
+// --- NEW: Signal to the GitHub Actions workflow that the list has changed ---
+  if (process.env.GITHUB_OUTPUT) {
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `list_changed=true\n`);
+  }
+
   } else {
     console.log('\nNo changes detected. The censored list is already up to date!');
   }
