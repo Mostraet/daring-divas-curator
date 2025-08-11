@@ -1,9 +1,14 @@
 name: Daring Divas Curator
 
+# --- THIS BLOCK IS MISSING FROM YOUR FILE ---
+# This explicitly grants the built-in GITHUB_TOKEN permission to write to gists.
+permissions:
+  gists: write
+
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */6 * * *' # Updated to run every 6 hours
+    - cron: '0 */6 * * *'
 
 jobs:
   curate:
@@ -21,14 +26,14 @@ jobs:
         run: npm install
 
       - name: Run Curator Script
-        id: run_curator # Give this step an ID so we can reference its output
+        id: run_curator
         run: node curator.js
         env:
-          GIST_ID: ${{ secrets.GIST_ID }}
+          # This now correctly uses the built-in token that has been granted permissions
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
 
-      # --- NEW, SIMPLER STEP: Send a Telegram message only if the list changed ---
       - name: Send Telegram notification
         if: steps.run_curator.outputs.list_changed == 'true'
         run: |
