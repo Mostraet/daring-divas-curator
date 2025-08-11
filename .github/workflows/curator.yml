@@ -1,7 +1,6 @@
 name: Daring Divas Curator
 
-# --- THIS BLOCK IS MISSING FROM YOUR FILE ---
-# This explicitly grants the built-in GITHUB_TOKEN permission to write to gists.
+# This block must be at the top level, with no indentation.
 permissions:
   gists: write
 
