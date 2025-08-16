@@ -1,8 +1,6 @@
 name: Daring Divas Curator
 
 # This block must be at the top level, with no indentation.
-permissions:
-  gists: write
 
 on:
   workflow_dispatch:
