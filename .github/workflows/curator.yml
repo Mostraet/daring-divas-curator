@@ -1,8 +1,6 @@
 name: Daring Divas Curator
 
 # This block must be at the top level, with no indentation.
-permissions:
-  gists: write
 
 on:
   workflow_dispatch:
@@ -28,10 +26,9 @@ jobs:
         id: run_curator
         run: node curator.js
         env:
-          # This now correctly uses the built-in token that has been granted permissions
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GIST_ID: ${{ secrets.GIST_ID }}
-          ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
+          GIST_ACCESS_TOKEN: ${{ secrets.GIST_ACCESS_TOKEN }}
+          GIST_ID:           ${{ secrets.GIST_ID }}
+          ALCHEMY_API_KEY:   ${{ secrets.ALCHEMY_API_KEY }}
 
       - name: Send Telegram notification
         if: steps.run_curator.outputs.list_changed == 'true'

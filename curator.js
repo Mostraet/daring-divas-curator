@@ -17,7 +17,7 @@ const path = require('path');
 const DARING_DIVAS_CONTRACT = '0xD127d434266eBF4CB4F861071ebA50A799A23d9d';
 const GIST_ID = process.env.GIST_ID;
 // --- THIS IS THE CORRECTED LINE ---
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GIST_ACCESS_TOKEN = process.env.GIST_ACCESS_TOKEN;
 const GIST_FILENAME = 'censored-list.json';
 const GIST_API_URL = `https://api.github.com/gists/${GIST_ID}`;
 const SIMILARITY_THRESHOLD = 5;
@@ -38,7 +38,7 @@ async function getCurrentCensoredList() {
     try {
       console.log(`Fetching current censored list from Gist...`);
       const response = await axios.get(GIST_API_URL, {
-        headers: { Authorization: `Bearer ${GITHUB_TOKEN}` },
+        headers: { Authorization: `token ${GIST_ACCESS_TOKEN}` },
       });
       if (response.data.files[GIST_FILENAME]) {
         const content = response.data.files[GIST_FILENAME].content;
@@ -126,7 +126,7 @@ async function runCurator() {
     await axios.patch(
         GIST_API_URL, 
         { files: { [GIST_FILENAME]: { content: JSON.stringify(newCensoredList, null, 2) } } }, 
-        { headers: { Authorization: `Bearer ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' } }
+        { headers: { Authorization: `token ${GIST_ACCESS_TOKEN}`, 'Content-Type': 'application/json' } }
     );
     console.log('Gist updated successfully!');
 
